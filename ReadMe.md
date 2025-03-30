@@ -18,4 +18,4 @@ B(t) = \sum_{i=0}^{n} \binom{n}{i} (1 - t)^{n-i} t^i P_i
 - Right click to create multiple Bezeir objects
 - Select between Quadratic and Cubic curves
 
-![me](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjJicTQ0bWpjaG85NDVhcHBpcWJiaTg5anNibXg3dXZweXVmMGVxMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AjDlOPXjOGg49653n3/giphy.gif)
+![me](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHJvNHl1cXhsNmFxYjhxNTZ1bGM1cG8zZHo1OGo1ZDZ3bGxoeWpmNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/D24cUndDkSExkc9ZVC/giphy.gif)
