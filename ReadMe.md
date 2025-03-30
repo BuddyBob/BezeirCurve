@@ -15,4 +15,6 @@ B(t) = \sum_{i=0}^{n} \binom{n}{i} (1 - t)^{n-i} t^i P_i
 - `P_i` are control points (shown in red).
 - Points connected with lines (100)
 
+- Right click to create multiple Bezeir objects
+
 ![me](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWRsaGxvcjYwZGZ3cHJueGhuaXQzYmR4dmFjOW84azB6MHJsNWFyaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/llZT2YJQ6ndkAlC3ve/giphy.gif)
