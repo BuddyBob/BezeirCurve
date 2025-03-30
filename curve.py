@@ -2,10 +2,11 @@ import pygame
 import sys
 import numpy as np
 from math import comb
+import random 
 
 # Initialize Pygame
 pygame.init()
-WIDTH, HEIGHT = 1000, 1000
+WIDTH, HEIGHT = 1400, 1000
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Bezier Curve Visualization")
 clock = pygame.time.Clock()
@@ -15,9 +16,16 @@ font = pygame.font.SysFont("Arial", 18)
 
 # BezierCurve class
 class BezierCurve:
-    def __init__(self, control_points):
+    def __init__(self, control_points, color=None):
         self.control_points = control_points
+        self.color = color if color else self.random_color()
 
+    def random_color(self):
+        return (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
+
+    # Calculate the point on the Bezier curve at parameter t
+    # B(t) = sum(i=0 to n) [C(n, i) * (1-t)^(n-i) * t^i * P[i]]
+    # where C(n, i) is the binomial coefficient, P[i] are the control points
     def B_t(self, t):
         point = np.zeros(2)
         n = len(self.control_points) - 1
@@ -34,11 +42,14 @@ class BezierCurve:
         for i in range(len(curve_points) - 1):
             start_pos = curve_points[i]
             end_pos = curve_points[i + 1]
+
             pygame.draw.line(screen, (255, 255, 255), start_pos.astype(int), end_pos.astype(int), 2)
+
+
 
     def draw_control_points(self, screen):
         for point in self.control_points:
-            pygame.draw.circle(screen, (255, 0, 0), point.astype(int), 6)
+            pygame.draw.circle(screen, self.color, point.astype(int), 6)
 
     """
     Calculate the derivative of the Bezier curve at parameter t.
@@ -51,24 +62,36 @@ class BezierCurve:
         n = len(self.control_points) - 1
         derivative = np.zeros(2)
         for i in range(n):
-            diff = self.control_points[i + 1] - self.control_points[i]
+            diff = self.control_points[i + 1] - self.control_points[i]  # Vector between adjacent control points
             derivative += comb(n - 1, i) * ((1 - t) ** (n - 1 - i)) * (t ** i) * n * diff
         return derivative
+    
+    def get_point(self, t):
+        return self.B_t(t)
+
 
 # Variables
 curves = []
 dragging = False
 dragging_point = (None, None)
-current_n = 2
+current_n = 3
 tangent_button_active = False
 mouse_held = False
+t = 0
+speed = 0.01
 
 # Slider UI setup
 slider_rects = {
     2: pygame.Rect(100, HEIGHT - 40, 80, 30),
-    3: pygame.Rect(200, HEIGHT - 40, 80, 30)
+    3: pygame.Rect(200, HEIGHT - 40, 80, 30),
+    4: pygame.Rect(300, HEIGHT - 40, 80, 30),
+    5: pygame.Rect(400, HEIGHT - 40, 80, 30),
+    6: pygame.Rect(500, HEIGHT - 40, 80, 30),
+    7: pygame.Rect(600, HEIGHT - 40, 80, 30),
+    8: pygame.Rect(700, HEIGHT - 40, 80, 30),
 }
-tangent_button_rect = pygame.Rect(300, HEIGHT - 40, 80, 30)
+# Tangent button UI setup
+tangent_button_rect = pygame.Rect(800, HEIGHT - 40, 80, 30)
 
 def draw_slider():
     for n, rect in slider_rects.items():
@@ -83,6 +106,8 @@ def draw_tangent_button(active):
     label = font.render("Tangent", True, (255, 255, 255))
     screen.blit(label, (tangent_button_rect.x + 5, tangent_button_rect.y + 5))
 
+
+# Find the closest point on any curve to the mouse position and return the tangent vector at that point
 def find_tangent(mouse_x, mouse_y):
     if not curves:
         return None, None
@@ -141,19 +166,17 @@ while running:
                         dragging = True
                         dragging_point = (ci, pi)
 
-            # Right click = create new curve
+            #Right click create new curve dynamic 
             if event.button == 3:
                 offset = 200
-                if current_n == 2:
-                    new_points = [[mouse_x - offset, mouse_y],
-                                  [mouse_x, mouse_y - offset],
-                                  [mouse_x + offset, mouse_y]]
-                else:
-                    new_points = [[mouse_x - offset, mouse_y],
-                                  [mouse_x - offset//2, mouse_y - offset],
-                                  [mouse_x + offset//2, mouse_y - offset],
-                                  [mouse_x + offset, mouse_y]]
+                new_points = []
+                for i in range(current_n):
+                    angle = (2 * np.pi / current_n) * i
+                    x_offset = int(offset * np.cos(angle))
+                    y_offset = int(offset * np.sin(angle))
+                    new_points.append([mouse_x + x_offset, mouse_y + y_offset])
                 curves.append(BezierCurve(np.array(new_points, dtype=float)))
+
 
         elif event.type == pygame.MOUSEBUTTONUP:
             dragging = False
@@ -166,10 +189,19 @@ while running:
                 ci, pi = dragging_point
                 curves[ci].control_points[pi] = np.array([mouse_x, mouse_y])
 
-    # Draw curves
+    # Draw all curves
     for curve in curves:
         curve.draw_curve(screen)
         curve.draw_control_points(screen)
+
+        point = curve.get_point(t)
+        pygame.draw.circle(screen, (237, 36, 76), (int(point[0]), int(point[1])), 5)
+
+    t += speed
+    if t > 1:
+        t = 0  # Restart dot at beginning
+
+
 
     # Draw tangent line if active and mouse is held
     if tangent_button_active and mouse_held:
