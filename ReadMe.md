@@ -26,4 +26,4 @@ B(t) = \sum_{i=0}^{n} \binom{n}{i} (1 - t)^{n-i} t^i P_i
 - Visualize acceleration at each poiint on curve
 - See arc length of the curve
 
-![me](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHBtcnF5MnM0aHBvdGxtenl6Z3phZTV6Y3IyczQzODJoc2wyNTMzcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4yCbf4BKETAZLB4lGt/giphy.gif)
+![me](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExN203cm9yd2V6bTY3Y3JncHdxdG90eWV6eTNqOXZ0MXo0Zjh0YzYzZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wlcdHrdepz51q4awfh/giphy.gif)
