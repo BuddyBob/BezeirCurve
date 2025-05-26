@@ -1,4 +1,4 @@
-# 🎨 Bézier Curve Visualizer with Pygame
+# Bézier Curve Visualizer with Pygame
 
 This project visualizes a Bézier curve using Pygame. You can click and drag the red control points to dynamically reshape the curve in real-time.
 
